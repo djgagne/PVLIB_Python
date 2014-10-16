@@ -171,8 +171,8 @@ def pvl_clearsky_ineichen(Time,Location,LinkeTurbidity=-999):
 
     AMabsolute=pvl_absoluteairmass.pvl_absoluteairmass(AMrelative=pvl_relativeairmass.pvl_relativeairmass(ApparentZenith,model='kastenyoung1989'),Pressure=pvl_alt2pres.pvl_alt2pres(var.Location.altitude))
 
-    fh1=np.exp(var.Location.altitude*((- 1 / 8000)))
-    fh2=np.exp(var.Location.altitude*((- 1 / 1250)))
+    fh1=np.exp(var.Location.altitude*((- 1.0 / 8000.0)))
+    fh2=np.exp(var.Location.altitude*((- 1.0 / 1250.0)))
     cg1=(5.09e-05*(var.Location.altitude) + 0.868)
     cg2=3.92e-05*(var.Location.altitude) + 0.0387
 
@@ -202,13 +202,13 @@ def pvl_clearsky_ineichen(Time,Location,LinkeTurbidity=-999):
     b=0.664 + 0.163 / fh1
     BncI=b*(I0)*(np.exp(- 0.09*(AMabsolute)*((TL - 1))))
 
-    ClearSkyDNI=np.min(BncI,ClearSkyGHI*((1 - (0.1 - 0.2*(np.exp(- TL))) / (0.1 + 0.882 / fh1))) / pvl_tools.cosd(ApparentZenith))
-
+    ClearSkyDNI2= ClearSkyGHI*((1 - (0.1 - 0.2*(np.exp(- TL))) / (0.1 + 0.882 / fh1))) / pvl_tools.cosd(ApparentZenith))
+    ClearSkyDNI = pd.Series(np.minimum(BncI,ClearSkyDNI2))
     #ClearSkyDNI=ClearSkyGHI*((1 - (0.1 - 0.2*(np.exp(- TL))) / (0.1 + 0.882 / fh1))) / pvl_tools.cosd(ApparentZenith)
 
     ClearSkyDHI=ClearSkyGHI - ClearSkyDNI*(pvl_tools.cosd(ApparentZenith))
 
-    return ClearSkyGHI,ClearSkyDNI,ClearSkyDHI,BncI
+    return ClearSkyGHI,ClearSkyDNI,ClearSkyDHI
 
 
 def LinearlyScale(inputmatrix,inputmin,inputmax,outputmin,outputmax):

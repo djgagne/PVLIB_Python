@@ -86,7 +86,7 @@ def pvl_ephemeris(Time,Location,pressure=101325,temperature=12):
   to be inverted for use in the code.
   '''
   Latitude=var.Location['latitude']
-  Longitude=1 * var.Location['longitude']
+  Longitude= -1 * var.Location['longitude']
   Year=var.Time.year
   Month=var.Time.month
   Day=var.Time.day

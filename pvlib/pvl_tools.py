@@ -78,6 +78,9 @@ class Parse():		#parse complex logic
     '''
     def __init__(self, dct, Expect):
         self.__dict__.update(self.parse_fcn(dct,Expect))
+    
+    def __getitem__(self,key):
+        return getattr(self,key)
 
     def parse_fcn(self, kwargs, Expect):
 
